@@ -17,8 +17,6 @@ import torch
 import torch.nn as nn
 from esm.modules import ESM1bLayerNorm, RobertaLMHead, TransformerLayer
 from torch.nn import functional as F
-from argparse import Namespace
-from torch.serialization import safe_globals
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -397,19 +395,14 @@ def load_models():
         sae_weights = os.path.join(WEIGHTS_DIR, sae_checkpoint)
 
         try:
-            # Use safe_globals context manager to allow Namespace class
-            with safe_globals([Namespace]):
-                checkpoint = torch.load(sae_weights, weights_only=False)
-                if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
-                    sae_model.load_state_dict(
-                        {k.replace("sae_model.", ""): v for k, v in checkpoint["state_dict"].items()}
-                    )
-                else:
-                    sae_model.load_state_dict(checkpoint)
-        except Exception as e:
-            logger.error(f"Failed to load SAE weights: {str(e)}")
-            raise
-
+            sae_model.load_state_dict(torch.load(sae_weights))
+        except Exception:
+            sae_model.load_state_dict(
+                {
+                    k.replace("sae_model.", ""): v
+                    for k, v in torch.load(sae_weights)["state_dict"].items()
+                }
+            )
         sea_name_to_info[sae_name] = {
             "model": sae_model,
             "plm_layer": plm_layer,
