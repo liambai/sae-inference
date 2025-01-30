@@ -1,13 +1,11 @@
 FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 
-RUN echo "Building image for sae_inference endpoint"
-
 RUN apt-get update && apt-get install -y \
     wget \
     python3-pip \
     python3-dev
 
-COPY interprot/endpoints/sae_inference/requirements.txt .
+COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # Download ESM weights
@@ -44,7 +42,7 @@ WORKDIR /
 # Bust cache by downloading a dynamic page: https://stackoverflow.com/a/55621942
 # This ensures that any update to handler.py gets reflected
 ADD https://google.com cache_bust
-COPY interprot/endpoints/sae_inference/handler.py .
+COPY handler.py .
 
 EXPOSE 8000
 
