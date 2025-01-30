@@ -1,2 +1,1 @@
-# sae-inference
-RunPod endpoint for InterProt SAE inference
+# SAE Inference Endpoint on RunPod
