@@ -1,0 +1,6 @@
+services:
+  sae-inference:
+    build: .
+    volumes:
+      - ./:/app
+      - /app/weights # Preserve the weights directory
