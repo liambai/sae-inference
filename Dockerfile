@@ -6,11 +6,6 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     git
 
-# Install interprot in a different directory to avoid being overwritten
-WORKDIR /opt
-RUN git clone https://github.com/etowahadams/interprot.git
-RUN pip3 install -e interprot
-
 # Create and switch to app directory for application code
 WORKDIR /app
 

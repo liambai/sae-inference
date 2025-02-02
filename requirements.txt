@@ -4,3 +4,4 @@ torch==2.2.0
 numpy==1.26.4
 gdown
 lightning
+git+https://github.com/etowahadams/interprot.git

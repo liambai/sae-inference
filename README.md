@@ -5,6 +5,7 @@
 Build and run a Docker container
 
 ```bash
+docker compose build
 docker compose run --rm sae-inference bash
 ```
 
